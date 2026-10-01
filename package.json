@@ -1,0 +1,12 @@
+{
+  "name": "meu-cerebro",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Segundo cérebro que pensa sozinho, rodando no seu Claude Code",
+  "scripts": {
+    "mapa": "node mapa/servidor.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
