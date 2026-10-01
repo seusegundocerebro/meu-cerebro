@@ -703,7 +703,9 @@ $("#busca").addEventListener("input", () => {
 });
 $("#busca").addEventListener("keydown", (e) => {
   if (e.key !== "Enter" || !achados || !achados.size) return;
-  const primeiro = [...achados][0];
+  // nome exato digitado (ou título exato) abre essa nota; senão, a primeira que apareceu
+  const q = norm($("#busca").value.trim());
+  const primeiro = [...achados].find((id) => norm(id) === q || norm(nos.get(id).titulo) === q) || [...achados][0];
   $("#busca").blur();
   abre(primeiro);
 });
