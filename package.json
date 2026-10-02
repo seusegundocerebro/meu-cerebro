@@ -4,7 +4,8 @@
   "private": true,
   "description": "Segundo cérebro que pensa sozinho, rodando no seu Claude Code",
   "scripts": {
-    "mapa": "node mapa/servidor.js"
+    "mapa": "node mapa/servidor.js",
+    "test": "node --test"
   },
   "engines": {
     "node": ">=18"

@@ -1,9 +1,13 @@
+import { instalarRecursos } from "./recursos.js";
 // Mapa 3D do cérebro. Cada bolinha é uma nota .md; cada fio é um [[link]] entre elas.
 // O mapa pergunta ao servidor a cada 4 s se algo mudou: nota que o Claude criar aparece sozinha, piscando.
 const CDN = "https://cdn.jsdelivr.net/npm/";
 const $ = (s) => document.querySelector(s);
 // ?lento=20 estica os tempos (aviso, brilho, voo da câmera) pra gravar vídeo num computador sem placa de vídeo
-const LENTO = Math.max(1, Number(new URLSearchParams(location.search).get("lento")) || 1);
+const LENTO = Math.max(
+  1,
+  Number(new URLSearchParams(location.search).get("lento")) || 1,
+);
 const LEVE = new URLSearchParams(location.search).has("leve");
 document.body.classList.toggle("leve", LEVE);
 
@@ -84,7 +88,7 @@ function toast(txt, ms = 4500) {
   if (ms) toastTimer = setTimeout(() => (t.hidden = true), ms * LENTO);
 }
 
-// A barra não conversa com IA: prepara o comando para continuar no Claude Code.
+// Alternativa para quando o Claude Code não está instalado no PATH.
 async function copiaPergunta(txt) {
   try {
     await navigator.clipboard.writeText(txt);
@@ -110,59 +114,46 @@ async function copiaPergunta(txt) {
   }
 }
 
-$("#comando").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const pergunta = $("#pergunta").value.trim();
-  if (!pergunta) return $("#pergunta").focus();
-  const comando = /^\/perguntar(?:\s|$)/.test(pergunta)
-    ? pergunta
-    : "/perguntar " + pergunta;
-  const copiou = await copiaPergunta(comando);
-  toast(
-    copiou
-      ? "Copiado. Cole no Claude Code."
-      : "O comando ficou selecionado. Copie e cole no Claude Code.",
-    4200,
-  );
-});
-
-const ReconhecimentoVoz =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
-if (ReconhecimentoVoz) {
-  const mic = $("#btn-mic");
-  const reconhecimento = new ReconhecimentoVoz();
-  reconhecimento.lang = "pt-BR";
-  reconhecimento.interimResults = true;
-  reconhecimento.continuous = false;
-  let ouvindo = false;
-  let textoAntes = "";
-  mic.hidden = false;
-  mic.onclick = () => {
-    if (ouvindo) return reconhecimento.stop();
-    textoAntes = $("#pergunta").value.trim();
+const recursos = instalarRecursos({
+  api,
+  toast,
+  copia: copiaPergunta,
+  renderiza: (md) => {
+    const anterior = alvosDaNota;
+    alvosDaNota = null;
     try {
-      reconhecimento.start();
-    } catch {}
-  };
-  reconhecimento.onstart = () => {
-    ouvindo = true;
-    mic.classList.add("gravando");
-    mic.title = "Parar de ouvir";
-  };
-  reconhecimento.onresult = (e) => {
-    let falado = "";
-    for (let i = 0; i < e.results.length; i++)
-      falado += e.results[i][0].transcript;
-    $("#pergunta").value = [textoAntes, falado.trim()].filter(Boolean).join(" ");
-  };
-  reconhecimento.onerror = () => toast("Não consegui ouvir. Tente de novo.");
-  reconhecimento.onend = () => {
-    ouvindo = false;
-    mic.classList.remove("gravando");
-    mic.title = "Falar";
-    $("#pergunta").focus();
-  };
-}
+      return renderiza(md);
+    } finally {
+      alvosDaNota = anterior;
+    }
+  },
+  carrega,
+  abre,
+  fecha,
+  aberta: () => aberta,
+  editando: () => editando,
+  visivel,
+  pinta: () => {
+    if (graph) pinta();
+  },
+  limpaFoco: () => {
+    foco = null;
+    achados = null;
+  },
+  tudo: () => {
+    foco = null;
+    achados = null;
+    oculto.clear();
+    $("#busca").value = "";
+    montaLegenda();
+  },
+  acende: (ids) => {
+    foco = null;
+    achados = ids.length ? new Set(ids) : null;
+    for (const id of ids) recentes.set(id, Date.now());
+    if (graph) pinta();
+  },
+});
 
 // ---------- aparência ----------
 function brilhando(id) {
@@ -171,7 +162,10 @@ function brilhando(id) {
   return recentes.has(id);
 }
 function visivel(n) {
-  return !oculto.has(n.especie === "fantasma" ? "fantasma" : grupo(n));
+  return (
+    recursos.emTopico(n) &&
+    !oculto.has(n.especie === "fantasma" ? "fantasma" : grupo(n))
+  );
 }
 function apagado(n) {
   if (achados) return !achados.has(n.id);
@@ -187,11 +181,18 @@ function corNo(n) {
   const base = CORES[grupo(n)];
   const k = Math.min(0.48, Math.max(0, n.grau - 1) * 0.045);
   if (!k) return base;
-  const rgb = base.slice(1).match(/../g).map((x) => parseInt(x, 16));
+  const rgb = base
+    .slice(1)
+    .match(/../g)
+    .map((x) => parseInt(x, 16));
   return (
     "#" +
     rgb
-      .map((v) => Math.round(v + (255 - v) * k).toString(16).padStart(2, "0"))
+      .map((v) =>
+        Math.round(v + (255 - v) * k)
+          .toString(16)
+          .padStart(2, "0"),
+      )
       .join("")
   );
 }
@@ -209,11 +210,13 @@ function ligaFoco(l) {
 }
 function corLink(l) {
   const a = nos.get(idDe(l.source));
+  if (l.latente) return "rgba(180,140,255,0.22)";
   if (ligaFoco(l)) return a ? corNo(a) : CORES.decisao;
   if (foco || achados) return "rgba(62,78,98,0.1)";
   return a ? corNo(a) : CORES.nota;
 }
 function particulas(l) {
+  if (l.latente) return 0;
   const a = nos.get(idDe(l.source)),
     b = nos.get(idDe(l.target));
   if (ligaFoco(l)) return 3;
@@ -262,6 +265,9 @@ function ajustaRotulo(n) {
   r.element.classList.toggle("apagado", apagado(n));
   r.position.set(0, tamanho(n) * 2.7 + 2, 0);
   r.visible = rotulados.has(n.id) && visivel(n);
+  r.element.style.display = r.visible ? "" : "none";
+  r.element.classList.toggle("feito", n.status === "feito");
+  r.element.classList.toggle("no-plano", n.plano === "no-plano");
 }
 function objetoNo(n) {
   const g = new THREE.Group();
@@ -316,8 +322,7 @@ function pinta() {
   rotulados = escolheRotulos();
   animados = [...nos.values()].filter(
     (n) =>
-      recentes.has(n.id) ||
-      (n.especie === "faisca" && n.status !== "aceita"),
+      recentes.has(n.id) || (n.especie === "faisca" && n.status !== "aceita"),
   );
   graph
     .nodeColor(corNo)
@@ -329,7 +334,7 @@ function pinta() {
       return a && b && visivel(a) && visivel(b);
     })
     .linkColor(corLink)
-    .linkWidth((l) => (ligaFoco(l) ? 0.9 : 0.25))
+    .linkWidth((l) => (l.latente ? 0.1 : ligaFoco(l) ? 0.9 : 0.25))
     .linkDirectionalParticles(particulas)
     .linkDirectionalParticleColor(corLink);
   for (const n of nos.values()) {
@@ -344,6 +349,7 @@ function pinta() {
 function montaVizinhos() {
   vizinhos = new Map();
   for (const l of links) {
+    if (l.latente) continue;
     const a = idDe(l.source),
       b = idDe(l.target);
     if (!vizinhos.has(a)) vizinhos.set(a, new Set());
@@ -356,6 +362,9 @@ async function carrega(atualizando) {
   const g = await api("/api/grafo");
   versaoAtual = g.versao;
   const antigos = nos;
+  const novosIds = new Set(g.nos.map((n) => n.id));
+  for (const [id, n] of antigos)
+    if (!novosIds.has(id)) n.__rot?.element.remove();
   nos = new Map();
   const nascidos = [];
   for (const n of g.nos) {
@@ -369,6 +378,10 @@ async function carrega(atualizando) {
         "criado",
         "uso",
         "grau",
+        "frentes",
+        "areas",
+        "plano",
+        "ultimoUso",
       ])
         a[k] = n[k];
       nos.set(n.id, a);
@@ -380,7 +393,7 @@ async function carrega(atualizando) {
       }
     }
   }
-  links = g.links;
+  links = [...g.links, ...(g.latentes || [])];
   montaVizinhos();
   // nota nova nasce perto de quem ela liga, não no meio do nada
   for (const n of nascidos) {
@@ -396,11 +409,12 @@ async function carrega(atualizando) {
   }
   graph.graphData({
     nodes: [...nos.values()],
-    links: links.map((l) => ({ source: l.source, target: l.target })),
+    links: links.map((l) => ({ ...l })),
   });
   links = graph.graphData().links;
   montaLegenda();
   contagem();
+  recursos.atualizar(g);
   pinta();
   if (nascidos.length === 1)
     toast("🧠 Nasceu no cérebro: " + nascidos[0].titulo);
@@ -415,7 +429,7 @@ function contagem() {
     (n) => n.especie === "faisca" && n.status !== "aceita",
   ).length;
   const avisos = reais.filter((n) => n.aviso).length;
-  let t = `${reais.length} neurônios · ${links.length} sinapses`;
+  let t = `${reais.length} neurônios · ${links.filter((l) => !l.latente).length} sinapses · ${links.filter((l) => l.latente).length} latentes`;
   if (faiscas)
     t += ` · ✨ ${faiscas} faísca${faiscas > 1 ? "s" : ""} esperando você`;
   if (avisos) t += ` · ${avisos} desatualizada${avisos > 1 ? "s" : ""}`;
@@ -437,6 +451,7 @@ function montaLegenda() {
     b.onclick = () => {
       oculto.has(g) ? oculto.delete(g) : oculto.add(g);
       montaLegenda();
+      recursos.resumo();
       pinta();
     };
     el.appendChild(b);
@@ -449,12 +464,18 @@ function quando(iso) {
   const [a, m, d] = String(iso).split("-").map(Number);
   if (!a || !m || !d) return "";
   const hoje = new Date();
-  const dias = Math.round((new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate()) - new Date(a, m - 1, d)) / 864e5);
+  const dias = Math.round(
+    (new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate()) -
+      new Date(a, m - 1, d)) /
+      864e5,
+  );
   if (dias <= 0) return "criada hoje";
   if (dias === 1) return "criada ontem";
   if (dias < 60) return `criada há ${dias} dias`;
   const meses = Math.round(dias / 30);
-  return meses < 24 ? `criada há ${meses} meses` : `criada há ${Math.round(dias / 365)} anos`;
+  return meses < 24
+    ? `criada há ${meses} meses`
+    : `criada há ${Math.round(dias / 365)} anos`;
 }
 function separaFrontmatter(txt) {
   const m = txt.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
@@ -476,9 +497,13 @@ function achaPorLink(alvo) {
   // mesma prioridade do servidor: 1º caminho exato (cada pedaço vira chave, a "/" fica), depois nome do arquivo ou título
   const k = String(alvo).split("/").map(chaveLink).filter(Boolean).join("/");
   const reais = [...nos.values()].filter((n) => n.especie !== "fantasma");
-  const exato = reais.find((n) => n.id.split("/").map(chaveLink).join("/") === k);
+  const exato = reais.find(
+    (n) => n.id.split("/").map(chaveLink).join("/") === k,
+  );
   if (exato) return exato.id;
-  const pelo = reais.find((n) => chaveLink(n.id.split("/").pop()) === k || chaveLink(n.titulo) === k);
+  const pelo = reais.find(
+    (n) => chaveLink(n.id.split("/").pop()) === k || chaveLink(n.titulo) === k,
+  );
   if (pelo) return pelo.id;
   return nos.has("fantasma:" + k) ? "fantasma:" + k : null;
 }
@@ -488,9 +513,13 @@ function inline(s) {
       /\[\[([^\]|#]+)(?:#[^\]|]*)?(?:\|([^\]]*))?\]\]/g,
       (_, alvo, rot) => {
         // o texto já veio escapado; a chave do servidor é o texto cru do link
-        const cru = alvo.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
+        const cru = alvo
+          .replace(/&lt;/g, "<")
+          .replace(/&gt;/g, ">")
+          .replace(/&quot;/g, '"')
+          .replace(/&amp;/g, "&");
         const id = (alvosDaNota && alvosDaNota.get(cru)) || achaPorLink(cru);
-        const txt = rot || (id && nos.get(id) ? nos.get(id).titulo : alvo);
+        const txt = rot || (id && nos.get(id) ? esc(nos.get(id).titulo) : alvo);
         return `<a data-id="${esc(id || "")}" class="${id && !id.startsWith("fantasma:") ? "" : "vazio"}">${txt}</a>`;
       },
     )
@@ -544,13 +573,12 @@ function renderiza(md) {
   return out.join("\n");
 }
 async function abre(id, { semVoo, semUso } = {}) {
-  if (
-    editando &&
-    !confirm("Tem texto não salvo. Sair sem salvar?")
-  )
-    return;
+  if (editando && !confirm("Tem texto não salvo. Sair sem salvar?"))
+    return false;
   const n = nos.get(id);
   if (!n) return;
+  $("#faiscas").hidden = true;
+  $("#resposta").hidden = true;
   foco = id;
   achados = null;
   editando = false;
@@ -558,6 +586,7 @@ async function abre(id, { semVoo, semUso } = {}) {
   pinta();
   const p = $("#painel");
   p.hidden = false;
+  recursos.painel(n);
   const cor = corNo(n);
   $("#p-especie").textContent = n.aviso
     ? "Desatualizada"
@@ -585,11 +614,12 @@ async function abre(id, { semVoo, semUso } = {}) {
       return toast("Não abriu: " + e.message);
     }
     if (foco !== id) return;
-    aberta = { id, mtime: d.mtime, texto: d.texto };
+    aberta = { id, mtime: d.mtime, revisao: d.revisao, texto: d.texto };
     alvosDaNota = new Map(d.alvos || []);
     // só conta abertura que abriu de verdade (e antes de escrever o "aberta N×")
     if (!semUso) {
       n.uso = (n.uso || 0) + 1;
+      n.ultimoUso = new Date().toISOString();
       api("/api/uso", { id }).catch(() => {});
     }
     const { fm, corpo } = separaFrontmatter(d.texto);
@@ -626,12 +656,13 @@ async function abre(id, { semVoo, semUso } = {}) {
   }
 }
 function fecha() {
-  if (editando && !confirm("Tem texto não salvo. Sair sem salvar?")) return;
+  if (editando && !confirm("Tem texto não salvo. Sair sem salvar?"))
+    return false;
   editando = false;
   aberta = null;
   foco = null;
   $("#painel").hidden = true;
-  pinta();
+  if (graph) pinta();
 }
 $("#p-fechar").onclick = fecha;
 $("#p-leitura").addEventListener("click", (e) => {
@@ -664,6 +695,7 @@ $("#p-salvar").onclick = async () => {
       id: aberta.id,
       texto: $("#p-texto").value,
       mtime: aberta.mtime,
+      revisao: aberta.revisao,
     });
     editando = false;
     toast("Salvo.", 2000);
@@ -705,7 +737,10 @@ $("#busca").addEventListener("keydown", (e) => {
   if (e.key !== "Enter" || !achados || !achados.size) return;
   // nome exato digitado (ou título exato) abre essa nota; senão, a primeira que apareceu
   const q = norm($("#busca").value.trim());
-  const primeiro = [...achados].find((id) => norm(id) === q || norm(nos.get(id).titulo) === q) || [...achados][0];
+  const primeiro =
+    [...achados].find(
+      (id) => norm(id) === q || norm(nos.get(id).titulo) === q,
+    ) || [...achados][0];
   $("#busca").blur();
   abre(primeiro);
 });
@@ -810,7 +845,10 @@ async function inicia() {
     });
   // repulsão com alcance curto: grupo de notas sem ligação com o resto não sai voando pra longe
   graph.d3Force("charge").strength(-34).distanceMax(150);
-  graph.d3Force("link").distance(28).strength(0.46);
+  graph
+    .d3Force("link")
+    .distance((l) => (l.latente ? 45 : 28))
+    .strength((l) => (l.latente ? 0.03 : 0.46));
   let enquadrou = false;
   graph.onEngineStop(() => {
     if (enquadrou) return;
@@ -818,17 +856,18 @@ async function inicia() {
     graph.zoomToFit(900 * LENTO, 60);
   });
   // ?leve na URL desliga o brilho (computador fraco)
-  if (!LEVE) try {
-    const bloom = new bloomMod.UnrealBloomPass(
-      new THREE.Vector2(innerWidth, innerHeight),
-      0.72,
-      0.5,
-      0.18,
-    );
-    graph.postProcessingComposer().addPass(bloom);
-    // fundo opaco na cena: com o brilho ligado e fundo transparente, a tela sai cinza
-    graph.scene().background = new THREE.Color("#04060a");
-  } catch {}
+  if (!LEVE)
+    try {
+      const bloom = new bloomMod.UnrealBloomPass(
+        new THREE.Vector2(innerWidth, innerHeight),
+        0.72,
+        0.5,
+        0.18,
+      );
+      graph.postProcessingComposer().addPass(bloom);
+      // fundo opaco na cena: com o brilho ligado e fundo transparente, a tela sai cinza
+      graph.scene().background = new THREE.Color("#04060a");
+    } catch {}
   addEventListener("resize", () => graph.width(innerWidth).height(innerHeight));
   try {
     await carrega(false);

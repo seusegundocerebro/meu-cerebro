@@ -38,13 +38,50 @@
           autocomplete="off"
         />
       </label>
+      <button id="btn-nova" type="button">+ Ideia</button>
+      <button id="btn-faiscas" type="button">
+        Faíscas <span id="fx-n">0</span>
+      </button>
     </header>
 
-    <nav id="legenda" aria-label="Espécies de nota"></nav>
+    <aside id="lateral" aria-label="Tópicos">
+      <div class="lat-topo">
+        <b>TÓPICOS</b><button id="lat-tudo">Tudo</button
+        ><button id="lat-recolher" aria-label="Recolher tópicos">
+          Recolher
+        </button>
+      </div>
+      <p id="lat-resumo"></p>
+      <h2>Frentes</h2>
+      <div id="lat-frentes"></div>
+      <h2>Áreas</h2>
+      <div id="lat-areas"></div>
+      <h2>Ideias</h2>
+      <div id="lat-ideias"></div>
+      <h2>Tipos de nota</h2>
+      <nav id="legenda" aria-label="Espécies de nota"></nav>
+      <button id="lat-organizar">Organizar tópicos</button>
+      <p id="lat-faltantes"></p>
+    </aside>
+    <button
+      id="lateral-aba"
+      aria-label="Abrir tópicos"
+      aria-expanded="false"
+      hidden
+    >
+      Tópicos
+    </button>
+    <section id="sugestoes" aria-label="O cérebro sugere" hidden>
+      <div class="sg-topo">
+        <span>O CÉREBRO SUGERE</span><button id="sg-mais">Outras</button>
+      </div>
+      <div id="sg-lista"></div>
+    </section>
 
     <form id="comando">
       <span class="prompt" aria-hidden="true">›</span>
       <input
+        maxlength="2000"
         id="pergunta"
         type="text"
         placeholder="Pergunte ao cérebro…"
@@ -52,13 +89,32 @@
         enterkeyhint="send"
         aria-label="Pergunte ao cérebro"
       />
-      <button id="btn-mic" type="button" title="Falar" aria-label="Falar" hidden>
+      <button
+        id="btn-mic"
+        type="button"
+        title="Falar"
+        aria-label="Falar"
+        hidden
+      >
         <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
           <rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor" />
-          <path d="M6 11a6 6 0 0 0 12 0M12 17v4M9 21h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path
+            d="M6 11a6 6 0 0 0 12 0M12 17v4M9 21h6"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
         </svg>
       </button>
-      <button id="btn-perguntar" type="submit" title="Copiar pergunta" aria-label="Copiar pergunta">↵</button>
+      <button
+        id="btn-perguntar"
+        type="submit"
+        title="Perguntar"
+        aria-label="Perguntar"
+      >
+        ↵
+      </button>
     </form>
 
     <aside id="painel" hidden>
@@ -74,12 +130,82 @@
         <button id="p-salvar" class="primario" hidden>Salvar</button>
         <button id="p-cancelar" hidden>Cancelar</button>
       </div>
+      <div id="p-ciclo" hidden>
+        <span id="p-selo" class="chip" hidden></span>
+        <div class="acoes">
+          <button id="p-plano">Pedir plano</button
+          ><button id="p-ver-plano" hidden>Ver plano</button
+          ><button id="p-feito">Marcar feita</button>
+        </div>
+        <form id="p-feito-form" hidden>
+          <label
+            >O que foi feito?<input
+              id="p-resultado"
+              maxlength="2000"
+              placeholder="Resultado (opcional)"
+          /></label>
+          <div class="acoes">
+            <button type="submit">Confirmar feita</button
+            ><button type="button" id="p-feito-cancelar">Cancelar</button>
+          </div>
+        </form>
+      </div>
       <h2>Ligada a</h2>
       <ul id="p-vizinhos"></ul>
       <p class="dica">Pra mexer com o Claude: <code id="p-dica"></code></p>
     </aside>
 
-    <div id="toast" hidden></div>
+    <aside id="faiscas" class="folha" aria-label="Faíscas pendentes" hidden>
+      <button id="fx-fechar" class="fechar" aria-label="Fechar faíscas">
+        ×
+      </button>
+      <h1>Faíscas</h1>
+      <p>Ideias novas ao juntar notas que ainda não se ligam.</p>
+      <button id="fx-gerar">Nova faísca</button>
+      <div id="fx-lista"></div>
+    </aside>
+    <aside id="resposta" class="folha" aria-label="Resposta do cérebro" hidden>
+      <button id="r-fechar" class="fechar" aria-label="Fechar resposta">
+        ×
+      </button>
+      <span class="chip">Resposta do cérebro</span>
+      <p id="r-pergunta"></p>
+      <p id="r-status" role="status"></p>
+      <article id="r-texto"></article>
+      <div id="r-fontes"></div>
+      <div id="r-fallback" hidden>
+        <p>Continue no Claude Code:</p>
+        <textarea
+          id="r-comando"
+          readonly
+          aria-label="Comando para copiar"
+        ></textarea
+        ><button id="r-copiar">Copiar comando</button>
+      </div>
+    </aside>
+    <dialog id="dlg-nova" aria-labelledby="dn-titulo">
+      <form id="nova-form">
+        <h1 id="dn-titulo">Guardar uma ideia</h1>
+        <label for="dn-texto">Escreva ou dite do seu jeito</label
+        ><textarea
+          id="dn-texto"
+          required
+          maxlength="12000"
+          placeholder="Uma ideia, um plano, algo que não quero esquecer…"
+        ></textarea>
+        <p>Ela nasce ligada às notas mais parecidas.</p>
+        <p id="dn-erro" role="alert"></p>
+        <div class="acoes">
+          <button id="dn-mic" type="button" hidden>Ditar ideia</button
+          ><button id="dn-cancelar" type="button">Cancelar</button
+          ><button id="dn-criar" type="submit" class="primario">
+            Guardar ideia
+          </button>
+        </div>
+      </form>
+    </dialog>
+    <div id="atividade" role="status" hidden></div>
+    <div id="toast" role="status" hidden></div>
 
     <script type="module" src="mapa.js"></script>
   </body>

@@ -13,7 +13,9 @@ guarda o que importa, liga uma ideia na outra e lembra na hora certa.
 name: nome-do-arquivo-sem-md
 titulo: Título legível, como a pessoa falaria
 especie: ideia            # ideia | decisao | aprendizado | projeto | pessoa | faisca | nota
-criado: 2026-01-31        # data de hoje (rode `date +%F` se não souber)
+criado: 2026-01-31        # data local de hoje
+frente: Estúdio          # projeto ou contexto, usando as palavras da pessoa
+area: [Produto, Vendas]  # uma ou duas áreas; pode ser um texto simples
 ---
 
 Texto da nota, em frases simples, com as palavras da pessoa.
@@ -22,7 +24,8 @@ Se ela falou algo marcante, guarde a frase dela entre aspas.
 Ligado a [[outra-nota]] · [[mais-uma]]
 ```
 
-- Campos opcionais no topo: `status: feito` (ideia executada), `status: aceita` (faísca aprovada),
+- **Tópicos:** preencha `frente:` e `area:` em toda nota nova. Reutilize os nomes das notas existentes; não invente negócios ou pessoas. Se faltar contexto, use `Geral`. Os dois campos aceitam texto, lista entre colchetes ou lista com hífens. No mapa, duas frentes somam; frente com área cruza.
+- Campos opcionais no topo: `status: no-plano` (ideia planejada), `status: pendente` (faísca aguardando decisão), `status: feito` (ideia executada), `status: aceita` (faísca aprovada),
   `aviso: "Desatualizada: agora vale [[outra-nota]]"` (nota que foi superada).
 - Nome do arquivo: minúsculas, sem acento, palavras separadas por hífen, até uns 60 caracteres.
 - **Links** são `[[nome-do-arquivo]]`. É o link que vira o fio no mapa. Nota sem link fica solta; evite.
@@ -54,6 +57,16 @@ Ligado a [[outra-nota]] · [[mais-uma]]
 | `/conflitos` | Acha notas que se contradizem e pergunta qual vale |
 | `/executa <nota>` | Transforma uma ideia em plano e executa com você |
 | `/importar <pasta>` | Traz notas de outra pasta (ex.: um cofre do Obsidian) pro cérebro |
+
+## O mapa também trabalha
+
+- `+ IDEIA` guarda o texto e liga às notas semelhantes, sem chamar a IA. Os fios latentes são sugestões por semelhança (TF-IDF); não alteram notas.
+- A pergunta no mapa usa o Claude Code instalado e autenticado: primeiro escolhe notas, depois responde citando as usadas. Faz um pedido por vez, com limite de tempo. Sem o comando `claude`, oferece copiar `/perguntar`.
+- **Organizar tópicos** preenche campos ausentes em lotes de até 60 notas; preserve campos existentes e o texto também quando organizar pelo terminal.
+- **FAÍSCAS** permite ler, aprovar (vira ideia, `status: aceita`) e descartar para `notas/.lixeira/`. **Nova faísca** só roda quando a pessoa pede; não há agendamento.
+- Uma ideia pode receber `## Plano` e `status: no-plano`; ao terminar, acrescente `## Feito` e `status: feito`, sem apagar o plano. O mapa mostra selo e filtros. Criar plano não executa o trabalho: `/executa` continua com a pessoa.
+- Edições pelo mapa fazem cópia em `notas/.historico/` e recusam salvar sobre uma versão que mudou. Ao editar pelo terminal, leia a versão atual, preserve os campos e faça cópia antes de substituir uma nota existente. Pastas ocultas nunca entram nas buscas do cérebro.
+- O microfone usa o reconhecimento do navegador em português; pode depender da internet. O botão só aparece quando houver suporte.
 
 ## Sobre a pessoa
 

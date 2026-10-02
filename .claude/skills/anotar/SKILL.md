@@ -15,6 +15,7 @@ Entrada: `$ARGUMENTS` (se vier vazio, pergunte "O que você quer guardar? Pode c
    - Procure notas parecidas: `Grep` em `notas/` por 2 a 4 palavras-chave (sem acento também) e leia os títulos que aparecerem.
    - Se já existe nota do **mesmo** assunto, **acrescente** nela (um parágrafo novo com a data) em vez de criar outra.
    - Senão, crie `notas/<nome>.md` no formato do `CLAUDE.md`, com `criado:` de hoje (`date +%F`).
+   - Preencha `frente:` e `area:` reutilizando os tópicos das notas relacionadas. Ao atualizar, preserve campos existentes e guarde a versão anterior em `notas/.historico/`.
    - No fim do texto: `Ligado a [[...]] · [[...]]` com as 1 a 3 mais parecidas. Se nada parecer, ligue ao projeto mais próximo ou a `[[eu]]`.
    - Se ela contou uma frase marcante, guarde entre aspas com `> "frase"`.
 4. Responda curto:

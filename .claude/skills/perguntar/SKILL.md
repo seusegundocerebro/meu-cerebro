@@ -8,6 +8,8 @@ argument-hint: <pergunta>
 
 Pergunta: `$ARGUMENTS`
 
+No mapa, a mesma pergunta pode ser respondida diretamente na tela, em duas etapas (escolha das notas e resposta). As citações acendem e abrem as notas usadas. Se o Claude não estiver disponível ali, o mapa oferece este comando para copiar. Este comando no terminal continua funcionando normalmente.
+
 1. Tire 3 a 6 palavras-chave da pergunta (com e sem acento, singular e plural, sinônimos óbvios).
 2. `Grep` (sem diferenciar maiúscula) em `notas/` por elas. Leia as notas que aparecerem mais, até umas 12.
 3. Siga os `[[links]]` das 2 ou 3 notas mais importantes: às vezes a resposta está na vizinha.

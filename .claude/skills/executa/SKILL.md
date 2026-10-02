@@ -17,6 +17,7 @@ Nota: `$ARGUMENTS` (se vier vazio ou não achar o arquivo, procure pelo título 
    **Precisa de você:** decisões, acessos ou dinheiro que só a pessoa libera (ou "nada").
    **Tamanho:** pequeno (menos de 1 h) / médio / grande.
    ```
+   Marque `status: no-plano` no topo e preserve `frente`, `area` e os demais campos. Se o plano já foi criado no mapa, use esse plano em vez de gerar outro. Antes de alterar uma nota existente, guarde cópia em `notas/.historico/`.
    Mostre o plano e pergunte: "Começo?"
 3. Com o "sim", execute os passos que dá pra fazer daqui (escrever texto, montar planilha, criar arquivo, pesquisar, rascunhar mensagem).
    Passo que depende da pessoa: pare, explique em 1 linha o que ela precisa fazer, e siga quando ela voltar.
@@ -25,4 +26,4 @@ Nota: `$ARGUMENTS` (se vier vazio ou não achar o arquivo, procure pelo título 
    - Acrescente no fim da nota: `## Feito (<hoje>)` + 2 a 4 linhas do resultado + onde estão os arquivos.
    - No topo, ponha `status: feito`. **Não apague** planos ou "Feito" anteriores.
    - Se surgiu aprendizado no caminho, guarde como nota `aprendizado` ligada a esta.
-5. Responda: "✅ Feito. A ideia ficou verde no mapa."
+5. Responda: "✅ Feito. A ideia ganhou o selo FEITA no mapa." O botão MARCAR FEITA no mapa registra o resultado quando o trabalho foi concluído fora do terminal.

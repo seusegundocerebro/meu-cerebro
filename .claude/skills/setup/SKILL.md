@@ -26,9 +26,10 @@ Objetivo: em uns 5 minutos a pessoa sai com o cérebro dela no ar, com 8 a 15 no
      - uma nota `ideia` por ideia que ela contou,
      - uma nota `pessoa` por pessoa-chave (curta),
      - uma nota `decisao` ou `aprendizado` por regra dela.
+   - Preencha `frente:` em cada nota usando os projetos/contextos que a pessoa citou, e `area:` com uma ou duas áreas (por exemplo Produto, Vendas, Rotina). Reutilize os mesmos nomes nas notas relacionadas. Use Geral quando não houver contexto; não invente projetos. Registre esses nomes em "Sobre a pessoa" para manter consistência.
    - **Ligue tudo**: cada projeto liga em `[[eu]]`; cada ideia liga no projeto a que pertence; cada pessoa liga no projeto em que aparece.
    - Pode apagar as notas de exemplo `notas/comece-aqui.md` e `notas/como-o-cerebro-funciona.md` **só se ela quiser** — pergunte no fim.
-4. Abra o mapa seguindo a skill `/mapa` e diga o link.
+4. Abra o mapa seguindo a skill `/mapa` e diga o link. Apresente os tópicos, + IDEIA, pergunta com resposta na tela, FAÍSCAS e os botões de plano/feita. Os contadores e as sugestões usam as notas que acabou de criar.
 5. Feche com 3 dicas curtas:
    - "Fale comigo normalmente aqui: quando aparecer algo importante, eu guardo sozinho."
    - "`/anotar` quando quiser guardar algo na hora (pode colar texto ou ditar)."

@@ -58,7 +58,7 @@ o Claude guarda sozinho e avisa numa linha (`🧠 Guardei: …`).
 
 ## Precisa de quê
 
-- **Claude Code** com seu plano do Claude (Pro ou Max). O cérebro usa o seu plano, sem custo extra.
+- **Claude Code** instalado, autenticado e acessível pelo comando `claude`. Os pedidos de IA usam a assinatura ou a conta de API configurada nele, sujeitos aos limites e custos dessa conta.
 - **Node.js 18 ou mais novo**, só pro mapa 3D ([nodejs.org](https://nodejs.org), versão LTS).
 - Internet na primeira vez que abrir o mapa (ele baixa o motor 3D).
 
@@ -71,5 +71,27 @@ As notas são arquivos `.md` com `[[links]]`, iguais às do Obsidian. Dá pra:
 
 ## Privacidade
 
-Nada sai do seu computador além do que você já manda pro Claude na conversa. O mapa roda em `localhost`
-e só você enxerga. Não guarde senha nem documento no cérebro (o Claude avisa se aparecer).
+As notas ficam no seu computador. Ao perguntar, organizar tópicos, pedir plano ou gerar faíscas, o mapa envia ao Claude a pergunta e trechos das notas relevantes. Não há chamada de IA ao abrir o mapa, nem geração agendada. O reconhecimento de voz do navegador pode usar um serviço online.
+
+O servidor aceita acesso apenas pelo próprio computador (`localhost`). As chamadas ao Claude usam configurações de projeto/local, ferramentas desativadas, sem hooks ou servidores MCP, e têm limite de dois minutos por etapa. Não guarde senhas nem documentos no cérebro.
+
+
+## Usando o mapa
+
+Na pasta do cérebro, rode `npm run mapa` (ou `node mapa/servidor.js`) e abra http://localhost:4747. Funciona em Mac, Windows e Linux, sem instalar pacotes. Encerre com Ctrl+C nesse terminal.
+
+- **Números vivos:** neurônios são notas; sinapses são ligações escritas; latentes são sugestões por semelhança de texto. Fios latentes não modificam seus arquivos.
+- **Tópicos:** escolha frentes, áreas, ideias no plano ou feitas e tipos de nota. Duas frentes somam; frente + área cruza. **TUDO** limpa os filtros; **RECOLHER** libera espaço. Notas antigas sem tópicos ganham **ORGANIZAR TÓPICOS** (até 60 por pedido).
+- **+ IDEIA:** escreva ou dite; a nota nasce ligada às parecidas e aparece piscando. Busca, leitura e edição continuam no mapa; cada alteração guarda a versão anterior em `notas/.historico/`.
+- **Pergunte ao cérebro:** ele responde na tela, cita as notas e acende as usadas. Sem Claude no caminho de comandos, aparece o comando para copiar e colar no terminal. Use o microfone quando o navegador oferecer suporte e permitir acesso.
+- **O cérebro sugere:** quatro atalhos para tocar um plano, ler uma faísca, retomar ideia ou pedir ideias novas para uma frente. **OUTRAS** muda a seleção.
+- **FAÍSCAS:** leia, aprove ou descarte. Aprovar transforma em ideia; descartar move para `notas/.lixeira/`, de onde pode recuperar manualmente. **NOVA FAÍSCA** pede até três cruzamentos ao Claude.
+- **Ideia → plano → feita:** abra uma ideia, peça ou veja o plano; depois registre o resultado em **MARCAR FEITA**. Para executar o plano com o Claude, use `/executa nome-da-nota` no terminal.
+
+No celular a disposição se adapta e os tópicos ficam recolhidos. O servidor continua local: para acessar o computador pelo celular, seria necessário um túnel privado configurado à parte; não abra o servidor na internet. Para gravar vídeos, use `http://localhost:4747/?lento=3`. `?leve` reduz o trabalho da animação.
+
+Os tópicos ficam no início de cada nota, por exemplo `frente: Estúdio` e `area: [Produto, Vendas]`. `/setup`, `/anotar` e `/importar` já orientam o Claude a preencher esses campos. Você pode ajustá-los no editor da nota.
+
+## Verificação do código
+
+`npm test` roda os testes locais com o próprio Node. Os testes de navegador usam Playwright apenas no ambiente de desenvolvimento; ele não é necessário para usar o kit.

@@ -16,4 +16,5 @@ Pasta de origem: `$ARGUMENTS` (se vazio, pergunte o caminho).
    `titulo:` (o nome do arquivo ou o primeiro `# título`), `especie: nota`, `criado:` (data de modificação do arquivo, no formato AAAA-MM-DD; funciona em Mac, Windows e Linux: `node -e "console.log(require('fs').statSync(process.argv[1]).mtime.toLocaleDateString('sv-SE'))" "<arquivo>"`).
    Não mexa no texto.
 4. Se forem até ~60 notas, leia os títulos e ajuste `especie` das óbvias (ideia, projeto, pessoa). Mais que isso, deixe `nota`.
+   Preencha `frente:` e `area:` onde faltarem, inferindo pelo texto e reutilizando os tópicos existentes. Preserve campos e links de origem. Se o lote for grande, explique que ORGANIZAR TÓPICOS no mapa classifica até 60 notas por pedido.
 5. Responda com o total trazido e sugira abrir o `/mapa`: "suas notas antigas agora têm fios".
