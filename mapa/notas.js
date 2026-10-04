@@ -233,6 +233,7 @@ function criarBanco(raiz, pasta = path.join(raiz, "notas")) {
         especie: fm.especie || "nota",
         status: fm.status || "",
         aviso: fm.aviso || "",
+        pacote: fm.pacote || "",
         criado: fm.criado || dataLocal(),
         frentes: lista(fm.frente),
         areas: lista(fm.area),

@@ -16,6 +16,8 @@ argument-hint: "[assunto opcional pra focar]"
 1. Liste as notas (`notas/*.md`, lendo `titulo` e `especie`). Se vier assunto em `$ARGUMENTS`, prefira notas desse assunto.
 2. Escolha **pares ou trios de notas que NÃO se ligam** entre si (nenhuma cita a outra com `[[...]]`), de frentes diferentes
    — uma ideia com um aprendizado, um projeto com uma pessoa, uma decisão antiga com uma ideia nova.
+   Notas com `pacote: vendas` (técnicas prontas) só entram cruzadas com uma nota da pessoa, nunca duas do pacote juntas:
+   a graça é a técnica aplicada à vida dela ("o SPIN no cliente X", "a objeção que ela mais ouve com a prova social que ela já tem").
    Leia essas notas inteiras. Ignore ideias feitas/encerradas e pares que já originaram faíscas; confira também as descartadas na lixeira para não insistir na mesma sugestão. A semelhança de texto e vizinhos em comum ajudam a escolher cruzamentos.
 3. Pense como um sócio esperto: o que nasce se juntar as duas? Um produto, um atalho, um risco que ninguém viu, uma pergunta que falta fazer.
    Descarte o óbvio e o genérico ("use IA", "faça marketing"). Precisa ser específico da vida dela.

@@ -13,7 +13,10 @@ export function sugestoes(ns, volta = 0) {
       n.status !== "feito" &&
       !["encerrado", "cancelado", "descartada"].includes(n.status),
   );
-  const frentes = [...new Set(ns.flatMap((n) => n.frentes || []))];
+  // Frente de pacote pronto (ex.: vendas) não vira sugestão: ideia boa nasce das frentes da pessoa.
+  const frentes = [
+    ...new Set(ns.filter((n) => !n.pacote).flatMap((n) => n.frentes || [])),
+  ];
   const grupos = [
     vivas
       .filter((n) => n.plano === "no-plano")

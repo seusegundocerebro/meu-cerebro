@@ -229,17 +229,28 @@ function criarOperacoes(banco, claude) {
             pares.set(chave, p);
           }
       }
+      // Nota de pacote (ex.: vendas) só cruza com nota da própria pessoa: pacote com pacote vira ideia genérica.
+      const no = new Map(validas.map((n) => [n.id, n]));
+      const soPacote = (a, b) => no.get(a).pacote && no.get(b).pacote;
+      for (const [k, p] of pares) if (soPacote(p.a, p.b)) pares.delete(k);
       // Cérebro pequeno sem vizinho em comum ainda pode cruzar assuntos de frentes diferentes.
+      const base = [
+        ...validas.filter((n) => !n.pacote),
+        ...validas.filter((n) => n.pacote),
+      ].slice(0, 40);
       if (!pares.size)
-        for (const a of validas.slice(0, 40))
-          for (const b of validas.slice(0, 40))
-            if (a.id < b.id && !explicitas.has(key(a.id, b.id)))
+        for (const a of base)
+          for (const b of base)
+            if (
+              a.id < b.id &&
+              !explicitas.has(key(a.id, b.id)) &&
+              !soPacote(a.id, b.id)
+            )
               pares.set(key(a.id, b.id), { a: a.id, b: b.id, pontos: 0.1 });
       const usados = new Set();
       for (const origem of banco.cruzamentos()) {
         for (const a of origem) for (const b of origem) usados.add(key(a, b));
       }
-      const no = new Map(validas.map((n) => [n.id, n]));
       const escolhidos = [...pares.values()]
         .filter((p) => !usados.has(key(p.a, p.b)))
         .map((p) => ({

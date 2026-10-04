@@ -54,6 +54,15 @@ Em uns 5 minutos o Claude te conhece e o cérebro nasce com as suas primeiras no
 E o mais importante não é comando: **conversando normalmente**, quando aparecer uma decisão, ideia ou aprendizado,
 o Claude guarda sozinho e avisa numa linha (`🧠 Guardei: …`).
 
+### Já vem pronto pra quem vende
+
+O kit traz um **pacote de vendas** com 56 notas ligadas: funil, atendimento no WhatsApp e no telefone, follow-up,
+SPIN, AIDA, Sandler, Challenger, os princípios de Cialdini, quebra das objeções mais comuns ("tá caro", "vou pensar",
+"vou falar com meu marido") e jeitos de fechar. O `/setup` pergunta se você quer ligar o pacote no seu cérebro.
+
+Depois é só contar o que o cliente disse. O Claude acha a técnica certa e monta a resposta com o seu produto e o seu
+jeito de falar. O que funcionar com você vira nota sua, ligada à técnica.
+
 ---
 
 ## Precisa de quê
