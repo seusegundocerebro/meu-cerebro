@@ -54,14 +54,23 @@ Em uns 5 minutos o Claude te conhece e o cérebro nasce com as suas primeiras no
 E o mais importante não é comando: **conversando normalmente**, quando aparecer uma decisão, ideia ou aprendizado,
 o Claude guarda sozinho e avisa numa linha (`🧠 Guardei: …`).
 
-### Já vem pronto pra quem vende
+### Já vem com mais de 1.300 memórias prontas
 
-O kit traz um **pacote de vendas** com 56 notas ligadas: funil, atendimento no WhatsApp e no telefone, follow-up,
-SPIN, AIDA, Sandler, Challenger, os princípios de Cialdini, quebra das objeções mais comuns ("tá caro", "vou pensar",
-"vou falar com meu marido") e jeitos de fechar. O `/setup` pergunta se você quer ligar o pacote no seu cérebro.
+O kit traz cinco pacotes de memórias ligadas entre si:
 
-Depois é só contar o que o cliente disse. O Claude acha a técnica certa e monta a resposta com o seu produto e o seu
-jeito de falar. O que funcionar com você vira nota sua, ligada à técnica.
+| Pacote | Memórias | O que tem |
+|---|---|---|
+| Vendas | 306 | funil, negociação, objeções, fechamento, time comercial, proposta, métricas |
+| WhatsApp | 250 | primeiro contato, tom, áudio, follow-up, janela de 24h, atendimento com robô, cobrança |
+| Site | 250 | página de vendas, copy, vídeo de vendas, checkout, pixel, rastreio, teste |
+| Low ticket | 250 | ideia, oferta, produto, preço, extras do checkout, criativo, pós-venda |
+| Tráfego pago | 200 | estrutura de teste, escala, leitura de métrica, diagnóstico, público, política |
+
+O `/setup` pergunta quais você quer ligar no seu cérebro. Já tem o cérebro instalado? Rode `/pacotes`: ele baixa a versão nova
+e instala as memórias sem mexer nas suas notas.
+
+Depois é só contar o que está acontecendo ("o cliente sumiu", "a página não converte", "o anúncio encareceu"). O Claude acha a
+memória certa e responde com o seu produto e o seu jeito de falar. O que funcionar com você vira nota sua, ligada à memória.
 
 ---
 

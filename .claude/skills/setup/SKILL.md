@@ -29,22 +29,22 @@ Objetivo: em uns 5 minutos a pessoa sai com o cérebro dela no ar, com 8 a 15 no
    - Preencha `frente:` em cada nota usando os projetos/contextos que a pessoa citou, e `area:` com uma ou duas áreas (por exemplo Produto, Vendas, Rotina). Reutilize os mesmos nomes nas notas relacionadas. Use Geral quando não houver contexto; não invente projetos. Registre esses nomes em "Sobre a pessoa" para manter consistência.
    - **Ligue tudo**: cada projeto liga em `[[eu]]`; cada ideia liga no projeto a que pertence; cada pessoa liga no projeto em que aparece.
    - Pode apagar as notas de exemplo `notas/comece-aqui.md` e `notas/como-o-cerebro-funciona.md` **só se ela quiser** — pergunte no fim.
-4. **Pacote de vendas.** Pergunte: "O cérebro já vem com um pacote de vendas pronto: funil, atendimento, WhatsApp, quebra de objeção,
-   SPIN, AIDA e técnicas de fechamento. Quer que eu ligue ele no seu cérebro?" Se ela vende qualquer coisa (produto, serviço,
-   consulta, o próprio trabalho), recomende que sim.
-   - Se sim: copie `pacotes/vendas/` para `notas/vendas/` sem substituir arquivo existente (`cp -rn pacotes/vendas notas/`).
-     Depois faça **uma** pergunta: "O que você vende, pra quem, e qual a objeção que você mais escuta dos clientes?"
+4. **Pacotes de memórias.** Diga: "O cérebro já vem com mais de 1.300 memórias prontas em cinco pacotes: vendas, WhatsApp,
+   site e página de vendas, low ticket e tráfego pago. Quer que eu ligue todos, ou só os que têm a ver com você?"
+   Se ela vende qualquer coisa (produto, serviço, consulta, o próprio trabalho), recomende pelo menos vendas e WhatsApp.
+   - Pra cada pacote escolhido: `cp -Rn pacotes/<pacote> notas/` no Mac, `cp -r --update=none pacotes/<pacote> notas/` no Linux e Windows (Git Bash); aviso de "non-portable" pode ser ignorado (não substitui arquivo existente).
+   - Depois faça **uma** pergunta: "O que você vende, pra quem, e qual a objeção que você mais escuta dos clientes?"
      Com a resposta, crie a nota `como-eu-vendo.md` (`especie: projeto`, frente e área da pessoa) ligada a `[[eu]]`,
-     `[[funil-de-vendas]]` e ao projeto dela; e uma nota `aprendizado` com a objeção nas palavras dela, ligada à nota de
-     objeção do pacote que mais encaixa (ex.: `[[objecao-ta-caro]]`) e a `[[como-eu-vendo]]`. Mostre em 2 linhas como
-     você responderia essa objeção, usando a técnica do pacote e o produto dela.
-   - Se não: diga que o pacote fica guardado e que ela pode pedir "instala o pacote de vendas" quando quiser.
+     à porta de cada pacote instalado (ex.: `[[pacote-de-vendas]]`) e ao projeto dela; e uma nota `aprendizado` com a objeção
+     nas palavras dela, ligada à memória de objeção que mais encaixa (ex.: `[[objecao-ta-caro]]`) e a `[[como-eu-vendo]]`.
+     Mostre em 2 linhas como você responderia essa objeção, usando a memória e o produto dela.
+   - Se não quiser agora: diga que os pacotes ficam guardados e que ela pode rodar `/pacotes` quando quiser.
 5. Abra o mapa seguindo a skill `/mapa` e diga o link. Apresente os tópicos, + IDEIA, pergunta com resposta na tela, FAÍSCAS e os botões de plano/feita. Os contadores e as sugestões usam as notas que acabou de criar.
 6. Feche com 3 dicas curtas:
    - "Fale comigo normalmente aqui: quando aparecer algo importante, eu guardo sozinho."
    - "`/anotar` quando quiser guardar algo na hora (pode colar texto ou ditar)."
    - "`/faisca` quando quiser ideia nova saindo do que você já pensou."
-   - Se instalou o pacote de vendas, troque a terceira dica por: "Quando um cliente travar, me conta o que ele disse que eu te dou a resposta com a técnica certa."
+   - Se instalou pacotes, troque a terceira dica por: "Quando um cliente travar, uma página não converter ou um anúncio encarecer, me conta que eu te respondo com a memória certa."
 
 ## Cuidados
 - Não despeje as 5 perguntas de uma vez.
