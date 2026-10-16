@@ -49,6 +49,10 @@ Em uns 5 minutos o Claude te conhece e o cérebro nasce com as suas primeiras no
 | `/faisca` | Junta ideias suas que ainda não se conhecem e sugere coisa nova |
 | `/conflitos` | Acha notas que se contradizem e pergunta qual vale |
 | `/executa` | Transforma uma ideia em plano e o Claude executa com você |
+| `/semana` | Monta a semana dentro do seu tempo, com até 3 prioridades |
+| `/cliente` | Guarda a ficha de um cliente; sem nome, mostra próximos passos vencidos |
+| `/estudar` | Divide um estudo em conceitos ligados e faz perguntas de revisão |
+| `/um-passo` | Mostra só uma coisa para fazer e espera você terminar |
 | `/importar` | Traz suas notas do Obsidian (ou de qualquer pasta) |
 
 E o mais importante não é comando: **conversando normalmente**, quando aparecer uma decisão, ideia ou aprendizado,

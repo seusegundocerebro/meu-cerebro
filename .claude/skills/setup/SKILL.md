@@ -46,6 +46,8 @@ Objetivo: em uns 5 minutos a pessoa sai com o cérebro dela no ar, com 8 a 15 no
    - "`/faisca` quando quiser ideia nova saindo do que você já pensou."
    - Se instalou pacotes, troque a terceira dica por: "Quando um cliente travar, uma página não converter ou um anúncio encarecer, me conta que eu te respondo com a memória certa."
 
+7. Se a pessoa quiser se organizar, apresente só o atalho que combina com ela: `/semana` para dividir o tempo, `/cliente` para lembrar combinados, `/estudar` para aprender ou `/um-passo` quando uma lista grande pesar. Os quatro ficam na lista de comandos do kit; não despeje todos na despedida.
+
 ## Cuidados
 - Não despeje as 5 perguntas de uma vez.
 - Use as palavras da pessoa nas notas; guarde uma frase dela entre aspas quando for marcante.
